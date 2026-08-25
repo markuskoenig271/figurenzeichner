@@ -110,7 +110,7 @@ werden gleichzeitig angezeigt:
 | `w ≤ 0` bei Kreis / Rechteck / Dreieck | „Radius muss größer als 0 sein" bzw. „Breite …" / „Basisbreite …" |
 | `h ≤ 0` bei Rechteck / Dreieck | „Höhe muss größer als 0 sein" |
 | Linie mit `Δx = 0` und `Δy = 0` | „Linie muss eine Länge größer als 0 haben" |
-| Farbe unbekannt (`col2rgb()` scheitert) | „Farbe ‚xyz' ist keine gültige Farbe" |
+| Farbe unbekannt (`col2rgb()` scheitert) | „Farbe „xyz“ ist keine gültige Farbe" |
 | Figur ragt über die Fläche hinaus (Bounding Box nicht in 0–100) | „Figur liegt nicht vollständig auf der Zeichenfläche (0–100)" |
 
 Weitere Fälle:

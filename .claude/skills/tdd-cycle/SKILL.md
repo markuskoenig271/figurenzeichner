@@ -29,6 +29,20 @@ function or a module, driving inputs with `session$setInputs()` and asserting on
 reactive values. Do not test what the browser renders here; that is
 `change-validation`'s job.
 
+**One level per behaviour.** A rule lives in exactly one test file:
+
+- Pure logic — every validation rule, every message text, every geometry case —
+  is tested in the unit test of the function that implements it, and only there.
+- A `testServer()` test proves the *wiring*: one case per observer or path
+  ("invalid input → state unchanged and an error is shown", "delete → selection
+  cleared"). It does not walk the message catalogue again; one representative
+  invalid input is enough. If a module test starts enumerating rules, move those
+  assertions to the unit test.
+- UI builders (`*_ui()`) get at most one test that the expected ids are present.
+
+Before writing an assertion, ask which existing test already covers it. A second
+test for a covered rule adds runtime and maintenance, not confidence.
+
 `tests/testthat/helper-source.R` sources every file in `R/` before the tests run.
 Test files must not `source()` anything themselves — under `covr` the sources are
 already loaded, and re-sourcing them would silently discard the coverage traces.
@@ -42,6 +56,9 @@ Rscript -e 'testthat::test_dir("tests/testthat", filter = "geometry")'
 ```
 
 `filter` is a regex on the file name without the `test-` prefix and `.R` suffix.
+On Windows, `Rscript -e` breaks on a `|` inside the expression (`filter =
+"figure|geometry"` fails with "Pfad nicht gefunden") — run one filter at a time or
+the whole suite.
 
 The test must fail **for the reason you intend**. An `could not find function`
 error or a typo in a helper name is not a red test — it is a broken test that will
@@ -59,8 +76,9 @@ Rscript -e 'testthat::test_dir("tests/testthat", filter = "geometry")'
 
 ### 4. Refactor — with the test as the net
 
-Clean up only once green. Re-run after each change; run the whole suite before
-handing over:
+Clean up only once green. Re-run the **filtered** file after each change. The whole
+suite runs once, when the feature is done and before handing over — not after every
+edit, and not again in `pre-commit-check` if nothing changed since:
 
 ```bash
 Rscript -e 'testthat::test_dir("tests/testthat")'
@@ -68,10 +86,13 @@ Rscript -e 'testthat::test_dir("tests/testthat")'
 
 `test_dir` exits non-zero on any failure, so the shell exit code is trustworthy.
 
-### 5. Coverage
+### 5. Coverage — once per feature
+
+Measure once, at the end of the feature, together with the full suite. Do not run
+it per cycle; the number only means something for finished work.
 
 ```bash
-Rscript -e 'cov <- covr::file_coverage(list.files("R", full.names = TRUE), list.files("tests/testthat", "^test-", full.names = TRUE)); print(cov); cat(sprintf("Total: %.1f%%\n", covr::percent_coverage(cov)))'
+Rscript -e 'library(testthat); library(shiny); cov <- covr::file_coverage(list.files("R", full.names = TRUE), list.files("tests/testthat", "^test-", full.names = TRUE)); print(cov); cat(sprintf("Total: %.1f%%\n", covr::percent_coverage(cov)))'
 ```
 
 Target is 75% over `R/`. Treat it as a floor for meaningful lines, not a number to
