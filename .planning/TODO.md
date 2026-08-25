@@ -45,7 +45,9 @@ Offene Arbeit und technische Schuld. Bei jedem Sessionstart prüfen.
   installieren und danach `renv::snapshot()`. In `tdd-cycle`/`pre-commit-check`
   vermerken oder R aktualisieren (R ≥ 4.4 würde aktuelle Pakete erlauben)
 - [ ] `renv::restore()` auf einem frischen Clone einmal durchspielen (Lockfile enthält
-  116 Pakete, Snapshot-Typ „all")
+  116 Pakete, Snapshot-Typ „all") — dabei die RStudio-Anleitung im `README.md`
+  (Schritte 2–4) gegenprüfen, insbesondere ob renv beim Öffnen wirklich die
+  „out-of-sync"-Meldung zeigt
 
 ## Ausserhalb des Repos (User-Aktion)
 
