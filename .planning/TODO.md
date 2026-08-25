@@ -4,14 +4,13 @@ Offene Arbeit und technische Schuld. Bei jedem Sessionstart prüfen.
 
 ---
 
-## Vor dem ersten Code (Architecture first)
+## Vor dem ersten Code (Architecture first) — erledigt 2026-08-25
 
-- [ ] `docs/architecture.md` ausfüllen: Komponenten (Geometrie-Modell, Zeichenfläche,
-  Figuren-Editor), Datenfluss zwischen reinen Funktionen und Shiny-Modulen,
-  Darstellungstechnik (`plot`/`ggplot2` vs. SVG/`htmlwidgets`) als Key Decision
-- [ ] `docs/ui_screens.md` ausfüllen: Zeichenfläche, Figuren-Palette/Editor,
-  Fehlerzustände (ungültige Größe, Figur außerhalb der Fläche)
-- [ ] Design vom User freigeben lassen — erst dann implementieren
+- [x] `docs/architecture.md` ausgefüllt (Base Graphics + `plotOutput(click=)`,
+  logisches 0–100-Koordinatensystem, festes Figur-Schema, zentraler `state`)
+- [x] `docs/ui_screens.md` ausgefüllt (Zeichenfläche, Editor mit Modi Neu/Bearbeiten,
+  Fehlertabelle)
+- [x] Design vom User freigegeben (2026-08-25)
 
 ## Toolchain (User-Aktion bzw. erste Session)
 
