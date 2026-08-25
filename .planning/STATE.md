@@ -5,20 +5,31 @@ Zusammen mit `TODO.md` bei jedem Sessionstart lesen. Spec in `PROJECT.md`.
 
 ---
 
-## Last updated: 2026-08-25 (Session 0 — Scaffold aus dem Template)
+## Last updated: 2026-08-25 (Session 1 — Design geschrieben und freigegeben)
 
 ## Headline
 
-Neues Repo, noch kein Code. Struktur aus `AA_Sample_Claude_Repo` per `/new-project`
-übertragen: Skills, Hooks, Settings, `.gitignore`, Planning-Dateien und die
-Doku-Skelette. Kein `app.R`, kein `R/`, keine Tests, kein `renv`.
+Design steht: `docs/architecture.md` und `docs/ui_screens.md` sind ausgefüllt und
+vom User freigegeben. Noch kein Code — kein `app.R`, kein `R/`, keine Tests, kein
+`renv`. Nächste Session beginnt mit der Toolchain, dann der erste `tdd-cycle`.
 
-## Architecture first — NICHT erfüllt
+## Architecture first — erfüllt (2026-08-25)
 
-`docs/architecture.md` und `docs/ui_screens.md` sind Skelette mit
-`<Komponente>`/`<Screen>`-Platzhaltern. Das Design ist nicht geschrieben und nicht
-freigegeben. **Vor der ersten Implementierung** müssen beide Dokumente ausgefüllt und
-vom User abgenommen sein (erster Block in `TODO.md`).
+Kernentscheidungen (Details und Begründung in `docs/architecture.md`):
+
+- Darstellung: Base Graphics in `renderPlot()`, Klicks über `plotOutput(click=)`
+  — kein ggplot2, kein JS
+- Logisches Koordinatensystem 0–100 × 0–100, Ursprung links unten, `asp = 1`
+- Figur mit festem Schema `id, type, x, y, w, h, colour` für alle vier Typen
+  (Kreis: `w` = Radius)
+- `validate_figure()` liefert Meldungen statt zu werfen
+- Ein zentrales `reactiveValues(drawing, selected, click)` in `app.R`, beide Module
+  bekommen die Referenz; Editor ist einziger Schreiber von `drawing`
+- Dateien: `R/figure.R`, `geometry.R`, `drawing.R`, `render.R`, `mod_canvas.R`,
+  `mod_editor.R` — je eine Testdatei
+
+Screens: eine Seite, Editor links (Modi Neu/Bearbeiten), Zeichenfläche rechts;
+Fehlertabelle mit konkreten Meldungstexten in `docs/ui_screens.md`.
 
 ## Toolchain
 
@@ -31,10 +42,16 @@ vom User abgenommen sein (erster Block in `TODO.md`).
 - `post-tool-format.sh` ist in `settings.json` verdrahtet (`styler::style_file` für
   `*.R`); wirkt erst, wenn `Rscript` im PATH ist und `styler` in der renv-Library
   vollständig installiert ist
+- Docs-Commit dieser Session lief **ohne** lintr/styler/testthat-Gate: es gab noch
+  keinen R-Code zu prüfen
 
 ## Next steps
 
-1. `Rscript` auf den PATH, `renv::init()`, Pakete installieren, `renv::snapshot()`
-   (siehe `TODO.md`, Block „Toolchain").
-2. `docs/architecture.md` und `docs/ui_screens.md` schreiben und freigeben lassen.
-3. Erst danach: `app.R`/`R/`/`tests/` per `tdd-cycle` anlegen.
+1. `Rscript` auf den PATH, `renv::init()`, Pakete installieren, `renv::snapshot()`,
+   `.lintr` anlegen (siehe `TODO.md`, Block „Toolchain").
+2. Erster `tdd-cycle`: `tests/testthat/helper-source.R`, `test-figure.R` mit
+   `figure()`/`validate_figure()`, dann `test-geometry.R` (`figure_area()` als
+   Einstieg) — in der Reihenfolge `figure.R` → `geometry.R` → `drawing.R` →
+   `render.R` → Module → `app.R`.
+3. Nach der ersten sichtbaren Version: `change-validation` mit den Szenarien aus
+   `docs/ui_screens.md`.
