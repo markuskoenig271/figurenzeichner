@@ -190,7 +190,8 @@ Einziger Ort mit Grafikcode. Base Graphics, kein ggplot2.
 - `draw_canvas(drawing, selected = NULL)` — öffnet ein Koordinatensystem
   `plot.window(xlim = CANVAS, ylim = CANVAS, asp = 1)` ohne Ränder, zeichnet einen
   Rahmen und alle Figuren in Z-Reihenfolge; die ausgewählte Figur bekommt zusätzlich
-  eine gestrichelte Bounding Box. Leere Zeichnung: nur der Rahmen.
+  eine gestrichelte Bounding Box mit `SELECTION_PADDING = 2` Einheiten Abstand (sonst
+  fiele sie beim Rechteck mit dessen Rand zusammen). Leere Zeichnung: nur der Rahmen.
 - `draw_figure(fig)` — `polygon()` über `figure_outline()` für Flächenfiguren
   (Füllung in `colour`, dunklerer Rand), `segments()` für Linien.
 

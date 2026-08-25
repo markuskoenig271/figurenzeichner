@@ -5,53 +5,51 @@ Zusammen mit `TODO.md` bei jedem Sessionstart lesen. Spec in `PROJECT.md`.
 
 ---
 
-## Last updated: 2026-08-25 (Session 1 — Design geschrieben und freigegeben)
+## Last updated: 2026-08-25 (Session 1 — Design, Toolchain und erste lauffähige App)
 
 ## Headline
 
-Design steht: `docs/architecture.md` und `docs/ui_screens.md` sind ausgefüllt und
-vom User freigegeben. Noch kein Code — kein `app.R`, kein `R/`, keine Tests, kein
-`renv`. Nächste Session beginnt mit der Toolchain, dann der erste `tdd-cycle`.
+Der Figurenzeichner läuft: Zeichenfläche und Editor gemäß `docs/ui_screens.md`, alle
+vier Figurentypen, Auswahl per Klick, Bearbeiten/Löschen, Validierung mit Meldungen.
+Toolchain steht (Rscript im User-PATH, renv-Library, `renv.lock`, `.lintr`). Alle
+Gates grün: 155 Unit-Tests, Coverage 99,2 %, lintr, styler; E2E-Runner 48/48.
 
-## Architecture first — erfüllt (2026-08-25)
+## What exists
 
-Kernentscheidungen (Details und Begründung in `docs/architecture.md`):
-
-- Darstellung: Base Graphics in `renderPlot()`, Klicks über `plotOutput(click=)`
-  — kein ggplot2, kein JS
-- Logisches Koordinatensystem 0–100 × 0–100, Ursprung links unten, `asp = 1`
-- Figur mit festem Schema `id, type, x, y, w, h, colour` für alle vier Typen
-  (Kreis: `w` = Radius)
-- `validate_figure()` liefert Meldungen statt zu werfen
-- Ein zentrales `reactiveValues(drawing, selected, click)` in `app.R`, beide Module
-  bekommen die Referenz; Editor ist einziger Schreiber von `drawing`
-- Dateien: `R/figure.R`, `geometry.R`, `drawing.R`, `render.R`, `mod_canvas.R`,
-  `mod_editor.R` — je eine Testdatei
-
-Screens: eine Seite, Editor links (Modi Neu/Bearbeiten), Zeichenfläche rechts;
-Fehlertabelle mit konkreten Meldungstexten in `docs/ui_screens.md`.
+- `app.R` + `R/` (`figure.R`, `geometry.R`, `drawing.R`, `render.R`, `mod_canvas.R`,
+  `mod_editor.R`) — Aufbau wie in `docs/architecture.md`
+- `tests/testthat/` — eine Testdatei je Quelldatei, Module per `shiny::testServer()`;
+  `helper-source.R` sourct `R/` und hängt `shiny` an
+- `tests/e2e/run_scenarios.R` — fährt die Szenarien aus `.planning/e2e-tests/` gegen
+  die ganze App (`testServer` auf `app.R`), rendert Canvas-Zustände als PNG;
+  `Rscript tests/e2e/run_scenarios.R`
+- `.planning/e2e-tests/` — 7 Szenarien + README (was nur der Browser prüfen kann)
+- `README.md` mit Start- und Entwicklungs-Kommandos
+- E2E-Befund behoben: der gestrichelte Auswahlrahmen fiel beim Rechteck mit dessen Rand
+  zusammen → `SELECTION_PADDING = 2` in `render.R`, in `architecture.md` nachgetragen
+- Browser-Prüfung der clientseitigen Punkte (conditionalPanel, Button-Zustand,
+  Formular-Updates) steht aus — Chrome-Automation war in dieser Session nicht
+  verfügbar; siehe `TODO.md`
 
 ## Toolchain
 
-- R 4.2.1 unter `C:\Program Files\R\R-4.2.1`, **nicht im PATH**
-- Global installiert: `shiny` 1.10.0, `testthat` 3.2.3, `styler` 1.10.3 (defekt:
-  Abhängigkeit `R.oo` fehlt); nicht installiert: `renv`, `lintr`, `covr`, `withr`
-- Geprüft: `testthat::test_dir()` liefert Exit 0 bei grün, 1 bei rot, 1 bei leerem
-  Test-Verzeichnis. Ungeprüft: lintr-, styler-, covr- und renv-Kommandos in
-  `pre-commit-check` und `tdd-cycle`
-- `post-tool-format.sh` ist in `settings.json` verdrahtet (`styler::style_file` für
-  `*.R`); wirkt erst, wenn `Rscript` im PATH ist und `styler` in der renv-Library
-  vollständig installiert ist
-- Docs-Commit dieser Session lief **ohne** lintr/styler/testthat-Gate: es gab noch
-  keinen R-Code zu prüfen
+- R 4.2.1; `C:\Program Files\R\R-4.2.1\bin` seit 2026-08-25 im User-PATH (neue
+  Terminals nötig; in dieser Session per `export PATH=...` gesetzt)
+- renv 1.2.4 (global), Projekt-Library mit den eingefrorenen CRAN-4.2-Binaries:
+  shiny 1.8.1.1, testthat 3.2.1.1, lintr 3.1.2, styler 1.10.3, covr 3.6.4, withr 3.0.0;
+  Snapshot-Typ „all", 116 Pakete im Lockfile
+- Stolpersteine: `renv::install()` holt für 4.2 unbrauchbare Builds (→ TODO);
+  `Rscript -e` bricht unter Windows bei `|` im Ausdruck (Filter einzeln fahren, im
+  `tdd-cycle` Skill vermerkt); `covr::file_coverage()` braucht `library(testthat);
+  library(shiny)` vorweg (Skill-Kommando angepasst)
+- `.lintr`: Zeilenlänge 100, `SNAKE_CASE` für Konstanten erlaubt,
+  `object_usage_linter` aus
+- `post-tool-format.sh` (styler-Hook) ist jetzt lauffähig, da Rscript und styler da sind
 
 ## Next steps
 
-1. `Rscript` auf den PATH, `renv::init()`, Pakete installieren, `renv::snapshot()`,
-   `.lintr` anlegen (siehe `TODO.md`, Block „Toolchain").
-2. Erster `tdd-cycle`: `tests/testthat/helper-source.R`, `test-figure.R` mit
-   `figure()`/`validate_figure()`, dann `test-geometry.R` (`figure_area()` als
-   Einstieg) — in der Reihenfolge `figure.R` → `geometry.R` → `drawing.R` →
-   `render.R` → Module → `app.R`.
-3. Nach der ersten sichtbaren Version: `change-validation` mit den Szenarien aus
-   `docs/ui_screens.md`.
+1. Branch `feat/figurenzeichner` nach `main` mergen (Commit dieser Session liegt dort).
+2. Manuelle Browser-Prüfung der vier clientseitigen Punkte (`TODO.md`, Block
+   „Manuelle Browser-Prüfung"), dabei die App einmal wirklich bedienen.
+3. Doku-Nachträge aus `TODO.md` („Doku-Drift") vom User bestätigen lassen und in
+   `docs/architecture.md` eintragen.
