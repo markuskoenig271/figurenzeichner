@@ -1,0 +1,38 @@
+# Generic base — every project keeps this part. new-project rewrites the stack
+# section for the target toolchain (see skill step 2).
+
+# Secrets and local configuration — never committed, regardless of repo visibility
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Superseded planning-state snapshots (see CLAUDE.md "Documentation Paths")
+.planning/archive/
+
+# --- Stack: R + Shiny + renv ---
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rproj
+.Renviron
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
+rsconnect/
+*.Rcheck/
+coverage.html
+covr-report/

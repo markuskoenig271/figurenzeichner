@@ -1,0 +1,4 @@
+# Line endings: LF everywhere, regardless of core.autocrlf on the machine.
+# The SessionStart hook is a bash script — CRLF breaks it on checkout.
+* text=auto eol=lf
+*.sh text eol=lf
