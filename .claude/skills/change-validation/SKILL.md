@@ -31,6 +31,13 @@ Think as the end user of this application, not as its author. Produce:
   a computation that cannot complete. These are where an application actually
   breaks — usually silently.
 
+Keep it small: one scenario per user goal, typically three to six for a change.
+A scenario earns its place only if it checks something the unit and `testServer()`
+tests **cannot** see — what is rendered, how the screen reacts, what the user reads.
+Do not restate the rule catalogue: every validation message is already a unit
+test; the E2E side needs *one* representative negative case per screen ("an invalid
+input shows its message and nothing lands on the canvas"), not one per rule.
+
 ## 2. Test pass — write the cases down
 
 For each scenario write `.planning/e2e-tests/<kebab-case-name>.md`:
@@ -64,9 +71,18 @@ scenario and extend it instead.
 - Start the app locally (`Rscript -e 'shiny::runApp(port = 3838)'`, then
   `http://localhost:3838`) and drive the written steps through the
   `claude-in-chrome` skill: click, type, read what the canvas / plot shows.
-- For scenarios that are only about server state (not what is rendered), a
-  `shiny::testServer()` case in `tests/testthat/` is an acceptable executor —
-  say so in the report.
+- A scenario step that is only about server state is normally **already covered**
+  by a `testServer()` module test from `tdd-cycle`. Reference that test in the
+  report instead of driving the step again; only write a new `testServer()` case if
+  no existing test covers it.
+- Without browser automation, `tests/e2e/run_scenarios.R` is the executor: it
+  drives the whole app (`testServer` on `app.R`) and renders the canvas states as
+  PNGs to look at. It holds **only** checks that cross module boundaries or need
+  rendering — not a copy of the module tests. When a check there duplicates a
+  module test, delete it from the runner.
+- Whatever only the browser can show (client-side hide/show, disabled buttons,
+  values the server pushed into inputs) is listed as *nicht ausführbar* with a
+  manual check in `TODO.md` — not approximated by more server-side checks.
 
 Execute the written steps as written. If a step turns out to be unexecutable, fix
 the test file — do not quietly substitute a different, easier check.

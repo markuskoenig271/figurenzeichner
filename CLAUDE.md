@@ -45,6 +45,12 @@ von Shiny automatisch geladen) · `tests/testthat/`.
 
 - **TDD verpflichtend** — `tdd-cycle` Skill vor jeder neuen Funktion; Geometrie ohne
   Shiny testbar, reaktive Logik über `shiny::testServer()`
+- **Eine Ebene pro Verhalten** — reine Logik (Regeln, Meldungen, Geometrie) nur in
+  Unit-Tests; `testServer()` prüft nur die Verdrahtung (ein Fall je Pfad, nicht den
+  Regelkatalog erneut); E2E nur, was Unit/`testServer` nicht sehen können. Was auf
+  einer Ebene grün ist, wird auf der nächsten nicht wiederholt
+- **Gates einmal** — gefilterte Testdatei im Zyklus, ganze Suite/Lint/Styler/Coverage
+  einmal vor der Übergabe (`pre-commit-check`), nicht nach jedem Schritt
 - **Architecture first** — siehe oben
 - **E2E-Validierung** — `change-validation` Skill bei jeder sichtbaren Änderung;
   Szenarien landen in `.planning/e2e-tests/`

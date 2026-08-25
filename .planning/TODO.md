@@ -16,6 +16,18 @@ Offene Arbeit und technische Schuld. Bei jedem Sessionstart prüfen.
   2026-08-25 direkt eingetragen (Befund aus der E2E-Validierung) — vom User
   bestätigen lassen
 
+## Test-Redundanz abbauen (Regel „eine Ebene pro Verhalten", seit 2026-08-25)
+
+- [ ] `tests/e2e/run_scenarios.R` auf Integrations-Checks eindampfen: Meldungstexte
+  (`err_has` je Regel), Auswahl-/Lösch-Pfade und Zählerstände sind bereits in
+  `test-mod_editor.R`/`test-mod_canvas.R` — im Runner bleiben nur modulübergreifende
+  Abläufe (Klick auf Canvas → Editor-Status) und die PNG-Snapshots
+- [ ] `test-mod_editor.R`: Fälle, die nur Meldungstexte prüfen („Leere Zahlenfelder
+  werden gemeldet"), auf einen repräsentativen Fehlerfall reduzieren — der Katalog
+  steht in `test-figure.R`
+- [ ] `.planning/e2e-tests/ungueltige-eingaben.md` auf einen repräsentativen
+  Negativfall kürzen
+
 ## Manuelle Browser-Prüfung (ohne Chrome-Automation nicht ausführbar)
 
 - [ ] `.planning/e2e-tests/`: die nur im Browser sichtbaren Punkte einmal von Hand

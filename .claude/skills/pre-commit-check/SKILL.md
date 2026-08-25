@@ -17,6 +17,12 @@ Rscript -e 'styler::style_dir(dry = "fail")'
 Rscript -e 'testthat::test_dir("tests/testthat")'
 ```
 
+Each step runs **once**. If a step already ran green in this session *after the
+last change to any tracked file*, do not repeat it — cite that run in the report
+("Suite: 155 grün, Lauf nach dem letzten Edit"). Coverage and the E2E runner are
+not part of this gate: coverage belongs to `tdd-cycle` (once per feature), the
+runner to `change-validation` (only when the change is user-visible).
+
 `lint_dir` and `style_dir` skip `renv/` by default. `dry = "fail"` errors if any
 file *would* be reformatted; it does **not** error if styler itself cannot process
 a file (a missing dependency shows up as `Styling threw an error` with exit 0) —
