@@ -28,14 +28,12 @@ Offene Arbeit und technische Schuld. Bei jedem Sessionstart prüfen.
 - [ ] `.planning/e2e-tests/ungueltige-eingaben.md` auf einen repräsentativen
   Negativfall kürzen
 
-## Manuelle Browser-Prüfung (ohne Chrome-Automation nicht ausführbar)
+## Browser-Automation (optional)
 
-- [ ] `.planning/e2e-tests/`: die nur im Browser sichtbaren Punkte einmal von Hand
-  prüfen — Höhe-Feld beim Kreis ausgeblendet (`conditionalPanel`), Übernehmen/
-  Löschen/Auswahl aufheben werden mit der Auswahl aktiv/inaktiv, Formular zeigt nach
-  Klick die Figurwerte bzw. die Klickposition, Beschriftungen Radius/Δx/Δy
-- [ ] Optional: `shinytest2`/`chromote` evaluieren, um diese Punkte zu automatisieren
-  (braucht Chrome; Binaries für R 4.2 prüfen)
+- [ ] `shinytest2`/`chromote` evaluieren, um die Browser-only-Punkte (conditionalPanel,
+  Button-Zustand, Formular-Updates) zu automatisieren — am 2026-08-25 vom User manuell
+  in RStudio geprüft und bestanden; bei jeder Änderung am Editor erneut manuell prüfen,
+  solange das nicht automatisiert ist (braucht Chrome; Binaries für R 4.2 prüfen)
 
 ## Toolchain
 

@@ -57,9 +57,10 @@ abbauen" in `TODO.md`). README hat eine Schritt-für-Schritt-Anleitung für RStu
 
 ## Next steps
 
-1. App einmal in RStudio/Browser bedienen und die vier Browser-only-Punkte aus
-   `TODO.md` abhaken; dabei die README-Schritte gegenprüfen (renv ist auf dieser
-   Maschine bereits synchron, `restore()` meldet das).
-2. Block „Test-Redundanz abbauen" in `TODO.md` umsetzen (Runner eindampfen,
+1. Block „Test-Redundanz abbauen" in `TODO.md` umsetzen (Runner eindampfen,
    Modul-Test-Fälle kürzen, ein Negativ-Szenario) — nach Freigabe.
-3. Doku-Nachträge („Doku-Drift" in `TODO.md`) vom User bestätigen lassen.
+2. Doku-Nachträge („Doku-Drift" in `TODO.md`) vom User bestätigen lassen.
+
+Erledigt am 2026-08-25: App vom User in RStudio bedient, die vier Browser-only-Punkte
+(conditionalPanel, Button-Zustand, Formular-Updates, Beschriftungen) bestanden;
+`renv::restore()` meldet auf dieser Maschine „already synchronized".
