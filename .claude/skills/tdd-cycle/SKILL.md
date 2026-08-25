@@ -42,6 +42,9 @@ Rscript -e 'testthat::test_dir("tests/testthat", filter = "geometry")'
 ```
 
 `filter` is a regex on the file name without the `test-` prefix and `.R` suffix.
+On Windows, `Rscript -e` breaks on a `|` inside the expression (`filter =
+"figure|geometry"` fails with "Pfad nicht gefunden") — run one filter at a time or
+the whole suite.
 
 The test must fail **for the reason you intend**. An `could not find function`
 error or a typo in a helper name is not a red test — it is a broken test that will
@@ -71,7 +74,7 @@ Rscript -e 'testthat::test_dir("tests/testthat")'
 ### 5. Coverage
 
 ```bash
-Rscript -e 'cov <- covr::file_coverage(list.files("R", full.names = TRUE), list.files("tests/testthat", "^test-", full.names = TRUE)); print(cov); cat(sprintf("Total: %.1f%%\n", covr::percent_coverage(cov)))'
+Rscript -e 'library(testthat); library(shiny); cov <- covr::file_coverage(list.files("R", full.names = TRUE), list.files("tests/testthat", "^test-", full.names = TRUE)); print(cov); cat(sprintf("Total: %.1f%%\n", covr::percent_coverage(cov)))'
 ```
 
 Target is 75% over `R/`. Treat it as a floor for meaningful lines, not a number to
