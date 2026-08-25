@@ -9,8 +9,8 @@ Zusammen mit `TODO.md` bei jedem Sessionstart lesen. Spec in `PROJECT.md`.
 
 ## Headline
 
-Der Figurenzeichner läuft und ist vollständig auf `feat/figurenzeichner` committet
-(noch nicht nach `main` gemergt). Nach dem Bau wurden die Testregeln gestrafft:
+Der Figurenzeichner läuft und ist seit 2026-08-25 auf `main` (Merge-Commit
+`b9fcc69`, Branch `feat/figurenzeichner`). Nach dem Bau wurden die Testregeln gestrafft:
 „eine Ebene pro Verhalten" und „Gates einmal" stehen jetzt in `CLAUDE.md` und den
 Skills; der vorhandene Code ist davon noch nicht bereinigt (Block „Test-Redundanz
 abbauen" in `TODO.md`). README hat eine Schritt-für-Schritt-Anleitung für RStudio.
@@ -57,9 +57,9 @@ abbauen" in `TODO.md`). README hat eine Schritt-für-Schritt-Anleitung für RStu
 
 ## Next steps
 
-1. `feat/figurenzeichner` nach `main` mergen (User-Entscheidung).
-2. App einmal in RStudio/Browser bedienen und die vier Browser-only-Punkte aus
-   `TODO.md` abhaken; dabei die README-Schritte gegenprüfen.
-3. Block „Test-Redundanz abbauen" in `TODO.md` umsetzen (Runner eindampfen,
+1. App einmal in RStudio/Browser bedienen und die vier Browser-only-Punkte aus
+   `TODO.md` abhaken; dabei die README-Schritte gegenprüfen (renv ist auf dieser
+   Maschine bereits synchron, `restore()` meldet das).
+2. Block „Test-Redundanz abbauen" in `TODO.md` umsetzen (Runner eindampfen,
    Modul-Test-Fälle kürzen, ein Negativ-Szenario) — nach Freigabe.
-4. Doku-Nachträge („Doku-Drift" in `TODO.md`) vom User bestätigen lassen.
+3. Doku-Nachträge („Doku-Drift" in `TODO.md`) vom User bestätigen lassen.
