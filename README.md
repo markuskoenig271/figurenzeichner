@@ -30,6 +30,8 @@ Voraussetzung: R 4.2.x und RStudio sind installiert.
 
    Nachfrage mit `y` bestätigen. Das installiert `shiny` und die Entwicklungspakete
    in `renv/library/` (dauert beim ersten Mal ein paar Minuten, danach nie wieder).
+   Antwortet renv mit `The library is already synchronized with the lockfile`, ist
+   die Library bereits vollständig — dann weiter mit Schritt 4.
 
 4. **App starten** — `app.R` im Editor öffnen und oben rechts auf **Run App**
    klicken, oder in der Konsole:
